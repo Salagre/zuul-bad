@@ -19,7 +19,7 @@ public class Game
 {
     private Parser parser;
     private Room currentRoom;
-        
+
     /**
      * Create the game and initialise its internal map.
      */
@@ -34,23 +34,27 @@ public class Game
      */
     private void createRooms()
     {
-        Room outside, theater, pub, lab, office;
-      
-        // create the rooms
-        outside = new Room("outside the main entrance of the university");
-        theater = new Room("in a lecture theater");
-        pub = new Room("in the campus pub");
-        lab = new Room("in a computing lab");
-        office = new Room("in the computing admin office");
-        
-        // initialise room exits
-        outside.setExits(null, theater, lab, pub);
-        theater.setExits(null, null, null, outside);
-        pub.setExits(null, outside, null, null);
-        lab.setExits(outside, office, null, null);
-        office.setExits(null, null, null, lab);
+        Room habitacionInicial, habitacionEste, habitacionDorada, habitacionSur, habitacionOeste, habitacionDelBoss, tiendaDeObjetos;
 
-        currentRoom = outside;  // start game outside
+        // create the rooms
+        habitacionInicial = new Room("Estas en la sala en la que te despertaste despues del golpe...");
+        habitacionEste = new Room("Es una sala Lugubre, llena de humedad, tambien hay una puerta en el norte...");
+        habitacionDorada = new Room("Es una habitacion dorada, mi abuelo me habló de ella, dijo que guarda un secreto, será mejor no tocar nada...");
+        habitacionSur = new Room("Esta sala esta llena de telarañas, tambien veo unos huesos en el suelo, aqui no hay nada, y da mucho canguele, mejor irse...");
+        habitacionOeste = new Room("Esta sala parece un pasillo mas que una sala, hacia el norte hay una puerta roja, con manchas de sangre en el suelo y al sur hay un cartel lumnoso que dice \"Las mejores compras del subsuelo, adelante, siempre esta abierto\", bastante extraño...");
+        habitacionDelBoss = new Room("... TENGO MIEDO, hay un monstruo enorme con un hacha gigante... parece dormido, eso es bueno, sera mejor no despertarlo...");
+        tiendaDeObjetos = new Room("Parece una tienda de barrio, pero de la edad media, hay todo tipo de objetos, una espada, un hacha, un escudo... son todo armas... y no hay nadie, será mejor no tocar nada...");
+
+        // initialise room exits
+        habitacionInicial.setExits(null, habitacionEste, habitacionSur, habitacionOeste);
+        habitacionEste.setExits(habitacionDorada, null, null, habitacionInicial);
+        habitacionDorada.setExits(null, null, habitacionEste, null);
+        habitacionSur.setExits(habitacionInicial, null, null, null);
+        habitacionOeste.setExits(habitacionDelBoss, habitacionInicial, tiendaDeObjetos, null);
+        habitacionDelBoss.setExits(null, null, habitacionOeste, null);
+        tiendaDeObjetos.setExits(habitacionOeste, null, null, null);
+
+        currentRoom = habitacionInicial;  // start game outside
     }
 
     /**
@@ -62,7 +66,7 @@ public class Game
 
         // Enter the main command loop.  Here we repeatedly read commands and
         // execute them until the game is over.
-                
+
         boolean finished = false;
         while (! finished) {
             Command command = parser.getCommand();
@@ -81,7 +85,7 @@ public class Game
         System.out.println("World of Zuul is a new, incredibly boring adventure game.");
         System.out.println("Type 'help' if you need help.");
         System.out.println();
-        System.out.println("You are " + currentRoom.getDescription());
+        System.out.println(currentRoom.getDescription());
         System.out.print("Exits: ");
         if(currentRoom.northExit != null) {
             System.out.print("north ");
@@ -176,7 +180,7 @@ public class Game
         }
         else {
             currentRoom = nextRoom;
-            System.out.println("You are " + currentRoom.getDescription());
+            System.out.println(currentRoom.getDescription());
             System.out.print("Exits: ");
             if(currentRoom.northExit != null) {
                 System.out.print("north ");
