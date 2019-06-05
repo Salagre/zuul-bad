@@ -28,7 +28,7 @@ public class Room
         this.description = description;
         exits = new HashMap<>();
     }
-    
+
     public void setExit(String direccion, Room nextRoom){
         exits.put(direccion, nextRoom);
     }
@@ -42,7 +42,7 @@ public class Room
     }
 
     public Room getExit(String direccion){
-        
+
         return exits.get(direccion);
     }
 
@@ -68,5 +68,15 @@ public class Room
         }
 
         return txtADevolver;
+    }
+
+    /**
+     * Devuelve un texto con la descripcion larga de la habitacion del tipo:
+     *     You are in the 'name of room'
+     *     Exits: north west southwest
+     * @return Una descripcion de la habitacion incluyendo sus salidas
+     */
+    public String getLongDescription(){
+        return description + "\n" + getExitString();
     }
 }
