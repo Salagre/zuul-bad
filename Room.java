@@ -28,29 +28,9 @@ public class Room
         this.description = description;
         exits = new HashMap<>();
     }
-
-    /**
-     * Define the exits of this room.  Every direction either leads
-     * to another room or is null (no exit there).
-     * @param north The north exit.
-     * @param east The east east.
-     * @param south The south exit.
-     * @param west The west exit.
-     */
-    public void setExits(Room north, Room east, Room south, Room west, Room southEast, Room northWest) 
-    {
-        if(north != null)
-            exits.put("north", north);
-        if(east != null)
-            exits.put("east", east);
-        if(south != null)
-            exits.put("south", south);
-        if(west != null)
-            exits.put("west", west);        
-        if(southEast != null)
-            exits.put("southEast", southEast);
-        if(northWest != null)
-            exits.put("northWest", northWest);
+    
+    public void setExit(String direccion, Room nextRoom){
+        exits.put(direccion, nextRoom);
     }
 
     /**
@@ -62,26 +42,8 @@ public class Room
     }
 
     public Room getExit(String direccion){
-        Room habitacion = null;
-        if(direccion.equals("north")){
-            habitacion = exits.get("north");
-        }
-        if(direccion.equals("east")){
-            habitacion = exits.get("east");
-        }
-        if(direccion.equals("west")){
-            habitacion = exits.get("west");
-        }
-        if(direccion.equals("south")){
-            habitacion = exits.get("south");
-        }
-        if(direccion.equals("southEast")){
-            habitacion = exits.get("southEast");
-        }
-        if(direccion.equals("northWest")){
-            habitacion = exits.get("northWest");
-        }
-        return habitacion;
+        
+        return exits.get(direccion);
     }
 
     public String getExitString(){

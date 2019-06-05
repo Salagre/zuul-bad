@@ -46,13 +46,27 @@ public class Game
         tiendaDeObjetos = new Room("Parece una tienda de barrio, pero de la edad media, hay todo tipo de objetos, una espada, un hacha, un escudo... son todo armas... y no hay nadie, será mejor no tocar nada...");
 
         // initialise room exits
-        habitacionInicial.setExits(null, habitacionEste, habitacionSur, habitacionOeste, null, null);
-        habitacionEste.setExits(habitacionDorada, null, null, habitacionInicial, null, null);
-        habitacionDorada.setExits(null, null, habitacionEste, null, null, null);
-        habitacionSur.setExits(habitacionInicial, null, null, null, null, habitacionOeste);
-        habitacionOeste.setExits(habitacionDelBoss, habitacionInicial, tiendaDeObjetos, null, habitacionSur, null);
-        habitacionDelBoss.setExits(null, null, habitacionOeste, null, null, null);
-        tiendaDeObjetos.setExits(habitacionOeste, null, null, null, null, null);
+        // habitacionInicial
+        habitacionInicial.setExit("west", habitacionOeste);
+        habitacionInicial.setExit("south", habitacionSur);
+        habitacionInicial.setExit("east", habitacionEste);
+        // habitacionEste
+        habitacionEste.setExit("north", habitacionDorada);
+        habitacionEste.setExit("west", habitacionInicial);
+        // habitacionDorada
+        habitacionDorada.setExit("south", habitacionEste);
+        // habitacionSur
+        habitacionSur.setExit("north", habitacionInicial);
+        habitacionSur.setExit("northWest", habitacionOeste);
+        // habitacionOeste
+        habitacionOeste.setExit("north", habitacionDelBoss);
+        habitacionOeste.setExit("east", habitacionInicial);
+        habitacionOeste.setExit("southEast", habitacionSur);
+        habitacionOeste.setExit("south", tiendaDeObjetos);
+        // habitacionDelBoss
+        habitacionDelBoss.setExit("south", habitacionOeste);
+        // tiendaDeObjetos
+        tiendaDeObjetos.setExit("north", habitacionOeste);
 
         currentRoom = habitacionInicial;  // start game outside
     }
