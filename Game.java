@@ -46,13 +46,13 @@ public class Game
         tiendaDeObjetos = new Room("Parece una tienda de barrio, pero de la edad media, hay todo tipo de objetos, una espada, un hacha, un escudo... son todo armas... y no hay nadie, será mejor no tocar nada...");
 
         // initialise room exits
-        habitacionInicial.setExits(null, habitacionEste, habitacionSur, habitacionOeste, null);
-        habitacionEste.setExits(habitacionDorada, null, null, habitacionInicial, null);
-        habitacionDorada.setExits(null, null, habitacionEste, null, null);
-        habitacionSur.setExits(habitacionInicial, null, null, null, null);
-        habitacionOeste.setExits(habitacionDelBoss, habitacionInicial, tiendaDeObjetos, null, habitacionSur);
-        habitacionDelBoss.setExits(null, null, habitacionOeste, null, null);
-        tiendaDeObjetos.setExits(habitacionOeste, null, null, null, null);
+        habitacionInicial.setExits(null, habitacionEste, habitacionSur, habitacionOeste, null, null);
+        habitacionEste.setExits(habitacionDorada, null, null, habitacionInicial, null, null);
+        habitacionDorada.setExits(null, null, habitacionEste, null, null, null);
+        habitacionSur.setExits(habitacionInicial, null, null, null, null, habitacionOeste);
+        habitacionOeste.setExits(habitacionDelBoss, habitacionInicial, tiendaDeObjetos, null, habitacionSur, null);
+        habitacionDelBoss.setExits(null, null, habitacionOeste, null, null, null);
+        tiendaDeObjetos.setExits(habitacionOeste, null, null, null, null, null);
 
         currentRoom = habitacionInicial;  // start game outside
     }
