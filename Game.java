@@ -19,7 +19,7 @@ public class Game
 {
     private Parser parser;
     private Room currentRoom;
-
+    private Room lastRoom;
     /**
      * Create the game and initialise its internal map.
      */
@@ -27,6 +27,7 @@ public class Game
     {
         createRooms();
         parser = new Parser();
+        lastRoom = null;
     }
 
     /**
@@ -38,22 +39,24 @@ public class Game
 
         // create the rooms
         habitacionInicial = new Room("Estas en la sala en la que te despertaste" + "\n" + 
-        "despues del golpe...", null);
+            "despues del golpe...");
         habitacionEste = new Room("Es una sala Lugubre, llena de humedad, tambien" + "\n" + 
-        "hay una puerta en el norte...", null);
+            "hay una puerta en el norte...");
         habitacionDorada = new Room("Es una habitacion dorada, mi abuelo me habló" + "\n" + 
-        "de ella, dijo que guarda un secreto, será mejor no tocar nada...", new Item("Cofre dorado que irradia una luz muy potente", 5000));
+            "de ella, dijo que guarda un secreto, será mejor no tocar nada...");
         habitacionSur = new Room("Esta sala esta llena de telarañas, tambien veo" + "\n" + 
-        "unos huesos en el suelo, aqui no hay nada, y da mucho canguele, mejor irse...", null);
+            "unos huesos en el suelo, aqui no hay nada, y da mucho canguele, mejor irse...");
         habitacionOeste = new Room("Esta sala parece un pasillo mas que una sala," + "\n" + 
-        "hacia el norte hay una puerta roja, con manchas de sangre en el suelo y al" + "\n" + 
-        "sur hay un cartel lumnoso que dice \"Las mejores compras del subsuelo," + "\n" + 
-        "adelante, siempre esta abierto\", bastante extraño...", null);
+            "hacia el norte hay una puerta roja, con manchas de sangre en el suelo y al" + "\n" + 
+            "sur hay un cartel lumnoso que dice \"Las mejores compras del subsuelo," + "\n" + 
+            "adelante, siempre esta abierto\", bastante extraño...");
         habitacionDelBoss = new Room("... TENGO MIEDO, hay un monstruo enorme con" + "\n" + 
-        "un hacha gigante... parece dormido, eso es bueno, sera mejor no despertarlo...", null);
+            "un hacha gigante... parece dormido, eso es bueno, sera mejor no despertarlo...");
         tiendaDeObjetos = new Room("Parece una tienda de barrio, pero de la edad media," + "\n" + 
-        "hay todo tipo de objetos, una espada, un hacha, un escudo... son todo armas... y no hay nadie, será mejor no tocar nada...", new Item("Una espada", 3000));
-
+            "hay todo tipo de objetos, una espada, un hacha, un escudo... son todo armas... y no hay nadie, será mejor no tocar nada...");
+        //Add the items to the rooms
+        habitacionDorada.addItem(new Item("Cofre dorado que irradia una luz muy potente", 5000));
+        tiendaDeObjetos.addItem(new Item("Una espada", 3000));
         // initialise room exits
         // habitacionInicial
         habitacionInicial.setExit("west", habitacionOeste);
@@ -141,6 +144,9 @@ public class Game
         else if (commandWord.equals("eat")) {
             eat();
         }
+        else if (commandWord.equals("back")) {
+            back();
+        }
 
         return wantToQuit;
     }
@@ -167,6 +173,7 @@ public class Game
      */
     private void goRoom(Command command) 
     {
+        lastRoom = currentRoom;
         if(!command.hasSecondWord()) {
             // if there is no second word, we don't know where to go...
             System.out.println("Go where?");
@@ -216,5 +223,13 @@ public class Game
     private void eat() 
     {
         System.out.println("You have eaten now and you are not hungry any more");
+    }
+    
+    private void back() 
+    {
+        if (lastRoom != null){
+            currentRoom = lastRoom;
+            printLocationInfo();
+        }
     }
 }
