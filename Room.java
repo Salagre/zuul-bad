@@ -17,16 +17,17 @@ public class Room
 {
     private String description;
     private HashMap<String, Room> exits;
+    private Item roomItem;
     /**
      * Create a room described "description". Initially, it has
      * no exits. "description" is something like "a kitchen" or
      * "an open court yard".
      * @param description The room's description.
      */
-    public Room(String description) 
-    {
+    public Room(String description, Item item){
         this.description = description;
         exits = new HashMap<>();
+        roomItem = item;
     }
 
     public void setExit(String direccion, Room nextRoom){
@@ -42,7 +43,6 @@ public class Room
     }
 
     public Room getExit(String direccion){
-
         return exits.get(direccion);
     }
 
@@ -77,6 +77,10 @@ public class Room
      * @return Una descripcion de la habitacion incluyendo sus salidas
      */
     public String getLongDescription(){
-        return description + "\n" + getExitString();
+        String actualItem = "";
+        if (roomItem != null){
+            actualItem = roomItem.getItem();
+        }
+        return "Estas en " + description + ".\n" + getExitString() + ".\n" + actualItem;
     }
 }

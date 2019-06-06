@@ -37,13 +37,22 @@ public class Game
         Room habitacionInicial, habitacionEste, habitacionDorada, habitacionSur, habitacionOeste, habitacionDelBoss, tiendaDeObjetos;
 
         // create the rooms
-        habitacionInicial = new Room("Estas en la sala en la que te despertaste despues del golpe...");
-        habitacionEste = new Room("Es una sala Lugubre, llena de humedad, tambien hay una puerta en el norte...");
-        habitacionDorada = new Room("Es una habitacion dorada, mi abuelo me habló de ella, dijo que guarda un secreto, será mejor no tocar nada...");
-        habitacionSur = new Room("Esta sala esta llena de telarañas, tambien veo unos huesos en el suelo, aqui no hay nada, y da mucho canguele, mejor irse...");
-        habitacionOeste = new Room("Esta sala parece un pasillo mas que una sala, hacia el norte hay una puerta roja, con manchas de sangre en el suelo y al sur hay un cartel lumnoso que dice \"Las mejores compras del subsuelo, adelante, siempre esta abierto\", bastante extraño...");
-        habitacionDelBoss = new Room("... TENGO MIEDO, hay un monstruo enorme con un hacha gigante... parece dormido, eso es bueno, sera mejor no despertarlo...");
-        tiendaDeObjetos = new Room("Parece una tienda de barrio, pero de la edad media, hay todo tipo de objetos, una espada, un hacha, un escudo... son todo armas... y no hay nadie, será mejor no tocar nada...");
+        habitacionInicial = new Room("Estas en la sala en la que te despertaste" + "\n" + 
+        "despues del golpe...", null);
+        habitacionEste = new Room("Es una sala Lugubre, llena de humedad, tambien" + "\n" + 
+        "hay una puerta en el norte...", null);
+        habitacionDorada = new Room("Es una habitacion dorada, mi abuelo me habló" + "\n" + 
+        "de ella, dijo que guarda un secreto, será mejor no tocar nada...", new Item("Cofre dorado que irradia una luz muy potente", 5000));
+        habitacionSur = new Room("Esta sala esta llena de telarañas, tambien veo" + "\n" + 
+        "unos huesos en el suelo, aqui no hay nada, y da mucho canguele, mejor irse...", null);
+        habitacionOeste = new Room("Esta sala parece un pasillo mas que una sala," + "\n" + 
+        "hacia el norte hay una puerta roja, con manchas de sangre en el suelo y al" + "\n" + 
+        "sur hay un cartel lumnoso que dice \"Las mejores compras del subsuelo," + "\n" + 
+        "adelante, siempre esta abierto\", bastante extraño...", null);
+        habitacionDelBoss = new Room("... TENGO MIEDO, hay un monstruo enorme con" + "\n" + 
+        "un hacha gigante... parece dormido, eso es bueno, sera mejor no despertarlo...", null);
+        tiendaDeObjetos = new Room("Parece una tienda de barrio, pero de la edad media," + "\n" + 
+        "hay todo tipo de objetos, una espada, un hacha, un escudo... son todo armas... y no hay nadie, será mejor no tocar nada...", new Item("Una espada", 3000));
 
         // initialise room exits
         // habitacionInicial
