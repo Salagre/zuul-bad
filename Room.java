@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * east, south, west.  For each direction, the room stores a reference
  * to the neighboring room, or null if there is no exit in that direction.
  * 
- * @author  Michael KÃ¶lling and David J. Barnes
+ * @author  Michael Kölling and David J. Barnes
  * @version 2011.07.31
  */
 public class Room 
@@ -88,8 +88,27 @@ public class Room
 
         return "Estas en " + description + ".\n" + getExitString() + ".\n" + actualItem;
     }
-    
+
     public void addItem(Item item){
         arrayListItem.add(item);
     }
+
+    public Item getItem(String id){
+        boolean buscando = true;
+        int position = 0;
+        Item itemToReturn = null;
+        while (buscando && arrayListItem.size() > position){
+            if (arrayListItem.get(position).getItemId().equals(id)){
+                itemToReturn = arrayListItem.get(position);
+                buscando = false;
+            }
+            position++;
+        }
+        return itemToReturn;
+    }
+
+    public void removeItem(Item item){
+        arrayListItem.remove(item);
+    }
+
 }
