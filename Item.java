@@ -5,29 +5,30 @@ public class Item{
     private String description;
     private int itemWeigth;
     private String id;
-    public Item(String description, int itemWeigth, String id)
+    private boolean canBePickedUp;
+    public Item(String description, int weigth, String id, boolean canBePickedUp)
     {
         this.description = description;
-        this.itemWeigth  = itemWeigth;
-        this.id  = id;
+        this.itemWeigth = weigth;
+        this.id = id;
+        this.canBePickedUp = canBePickedUp;
     }
-    
+
     public String getItem()
     {
-        return id + ": " + description + " " + itemWeigth + " gramos";
-    }
-    
+        return description + " " + itemWeigth + " gramos" + " // ID: " + id;    }
+
     public String getItemId()
     {
         return id;
     }
-    
+
     public String getdescription()
     {
         return description;
     }
-    
-     public int getWeigth()
+
+    public int getWeigth()
     {
         return itemWeigth;
     }

@@ -20,11 +20,8 @@ import java.util.ArrayList;
 public class Game 
 {
     private Parser parser;
-    private Room currentRoom;
-    private Stack<Room> roomStack;
-    private ArrayList<Item> bag;
-    private int bagWeigth;
-    private static final int MAXWEIGTH = 6000;
+    private Player player;
+
     /**
      * Create the game and initialise its internal map.
      */
@@ -32,15 +29,14 @@ public class Game
     {
         createRooms();
         parser = new Parser();
-        roomStack = new Stack<Room>();
-        bag = new ArrayList<>();
-        bagWeigth = 0;
+        player = new Player();
+        player.setCurrentRoom(createRooms());
     }
 
     /**
      * Create all the rooms and link their exits together.
      */
-    private void createRooms()
+    private Room createRooms()
     {
         Room habitacionInicial, habitacionEste, habitacionDorada, habitacionSur, habitacionOeste, habitacionDelBoss, tiendaDeObjetos;
 
@@ -62,8 +58,9 @@ public class Game
         tiendaDeObjetos = new Room("Parece una tienda de barrio, pero de la edad media," + "\n" + 
             "hay todo tipo de objetos, una espada, un hacha, un escudo... son todo armas... y no hay nadie, será mejor no tocar nada...");
         //Add the items to the rooms
-        habitacionDorada.addItem(new Item("Cofre dorado", 5000, "Cofre"));
-        tiendaDeObjetos.addItem(new Item("Una espada", 3000, "Espada"));
+        habitacionDorada.addItem(new Item("Cofre dorado", 5000, "Cofre", false));
+        tiendaDeObjetos.addItem(new Item("Una espada", 1000, "Espada", true));
+        habitacionSur.addItem(new Item("Un escudo", 4000, "Escudo", true));
         // initialise room exits
         // habitacionInicial
         habitacionInicial.setExit("west", habitacionOeste);
@@ -87,7 +84,7 @@ public class Game
         // tiendaDeObjetos
         tiendaDeObjetos.setExit("north", habitacionOeste);
 
-        currentRoom = habitacionInicial;  // start game outside
+        return habitacionInicial;
     }
 
     /**
@@ -119,7 +116,7 @@ public class Game
         System.out.println("World of Zuul is a new, incredibly boring adventure game.");
         System.out.println("Type 'help' if you need help.");
         System.out.println();
-        printLocationInfo();
+        player.look();
     }
 
     /**
@@ -141,28 +138,28 @@ public class Game
             printHelp();
         }
         else if (commandWord.equals("go")) {
-            goRoom(command);
+            player.goRoom(command);
         }
         else if (commandWord.equals("quit")) {
             wantToQuit = quit(command);
         }
         else if (commandWord.equals("look")) {
-            look();
+            player.look();
         }
         else if (commandWord.equals("eat")) {
-            eat();
+            player.eat();
         }
         else if (commandWord.equals("back")) {
-            back();
+            player.back();
         }
         else if (commandWord.equals("take")) {
-            take(command);
+            player.take(command);
         }
         else if (commandWord.equals("drop")) {
-            drop(command);
+            player.drop(command);
         }
         else if (commandWord.equals("items")) {
-            items();
+            player.items();
         }
 
         return wantToQuit;
@@ -185,34 +182,6 @@ public class Game
     }
 
     /** 
-     * Try to go in one direction. If there is an exit, enter
-     * the new room, otherwise print an error message.
-     */
-    private void goRoom(Command command) 
-    {
-
-        if(!command.hasSecondWord()) {
-            // if there is no second word, we don't know where to go...
-            System.out.println("Go where?");
-            return;
-        }
-
-        String direction = command.getSecondWord();
-        roomStack.push(currentRoom);
-        // Try to leave current room.
-        Room nextRoom = currentRoom.getExit(direction);
-
-        if (nextRoom == null) {
-            System.out.println("There is no door!");
-        }
-        else {
-            roomStack.push(currentRoom);
-            currentRoom = currentRoom.getExit(direction);
-            printLocationInfo();
-        }
-    }
-
-    /** 
      * "Quit" was entered. Check the rest of the command to see
      * whether we really quit the game.
      * @return true, if this command quits the game, false otherwise.
@@ -227,97 +196,5 @@ public class Game
             return true;  // signal that we want to quit
         }
     }
-
-    private void printLocationInfo(){
-        System.out.println(currentRoom.getLongDescription());
-        System.out.println();
-    }
-
-    private void look() 
-    {
-        System.out.println(currentRoom.getLongDescription());
-    }
-
-    private void eat() 
-    {
-        System.out.println("You have eaten now and you are not hungry any more");
-    }
-
-    private void back() 
-    {
-        if (!roomStack.empty()){
-            currentRoom = roomStack.pop();
-            printLocationInfo();
-        }
-        else{
-            System.out.println("No puedes volver atras, esta es la sala en la que empezaste!");
-        }
-    }
-
-    private void take(Command command) 
-    {
-        if(!command.hasSecondWord()) {
-            System.out.println("Falta nombre de item");
-        }
-        String positionItem = command.getSecondWord();
-        Item itemToTake = currentRoom.getItem(positionItem);
-
-       if (itemToTake != null && bagWeigth + itemToTake.getWeigth() < MAXWEIGTH){
-            System.out.println("Has cogido:" + "\n");
-            System.out.println(itemToTake.getItem());
-            bagWeigth += itemToTake.getWeigth();
-            bag.add(itemToTake);
-            currentRoom.removeItem(itemToTake);
-        }
-
-        else{
-            if (itemToTake == null){
-                System.out.println("No hay objetos en la habitacion");
-            }
-            else{
-                System.out.println("No puedes cargar con mas peso");
-            }
-        }
-    }
     
-    private void drop(Command command) 
-    {
-        if(!command.hasSecondWord()) {
-            // if there is no second word, we don't know the item to take...
-            System.out.println("No has indicado el ID del objeto a dejar");
-            return;
-        }
-        String itemID = command.getSecondWord();
-        Item itemToDrop = null;
-        int cont = 0;
-        while (itemToDrop == null && bag.size() > cont){
-            if (bag.get(cont).getItemId().equals(itemID)){
-                itemToDrop = bag.get(cont);
-            }
-            cont++;
-        }
-        
-        if (itemToDrop != null){
-            System.out.println("Has dejado el siguiente objeto:" + "\n");
-            System.out.println(itemToDrop.getItem());
-            bag.remove(itemToDrop);
-            currentRoom.addItem(itemToDrop);
-        }
-        else{
-            System.out.println("No hay objetos en la mochila para dejar");
-        }
-    }
-    
-    public void items() 
-    {
-        if (bag.size() > 0){
-            System.out.println("Llevas: ");
-            for (int i = 0; i < bag.size(); i++){
-                System.out.println(bag.get(i).getItem());
-            }
-        }
-        else{
-            System.out.println("Tu mochila esta vacia");
-        }
-    }
 }
