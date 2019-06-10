@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * 
  * @author  Michael Kölling and David J. Barnes
  * @version 2011.07.31
- */
+ */ 
 public class Room 
 {
     private String description;
