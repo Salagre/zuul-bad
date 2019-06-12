@@ -7,7 +7,7 @@ public class Player
     private Stack<Room> roomStack;
     private ArrayList<Item> bag;
     private int bagWeigth;
-    private static final int MAXWEIGTH = 6000;
+    private static int MAXWEIGTH = 6000;
     /**
      * Constructor for objects of class Player
      */
@@ -18,6 +18,10 @@ public class Player
         roomStack = new Stack<Room>();
         bag = new ArrayList<>();
         bagWeigth = 0;
+    }
+    
+    public void updateMaxWeight(){
+        MAXWEIGTH = 12000;
     }
 
     public void setCurrentRoom(Room room){
@@ -56,9 +60,6 @@ public class Player
     public void look() 
     {
         System.out.println(currentRoom.getLongDescription());
-        if (currentRoom.getDescription().equals("La terraza exterior, esta lloviendo")){
-            System.out.println("Has encontrado y asesinado a tu victima. Felicidades!!");
-        }
     }
 
     /** 
@@ -89,7 +90,6 @@ public class Player
         if(!command.hasSecondWord()) {
             // if there is no second word, we don't know the item to take...
             System.out.println("No has indicado el ID del objeto a coger");
-            return;
         }
         String positionItem = command.getSecondWord();
         Item itemToTake = currentRoom.getItem(positionItem);
@@ -151,4 +151,9 @@ public class Player
             System.out.println("Tu mochila esta vacia");
         }
     }
-}
+    
+    public void put(){
+            System.out.print("Ahora puedes llevar el doble de objetos");
+            updateMaxWeight();
+        }
+    }

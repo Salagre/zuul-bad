@@ -59,8 +59,9 @@ public class Game
             "hay todo tipo de objetos, una espada, un hacha, un escudo... son todo armas... y no hay nadie, será mejor no tocar nada...");
         //Add the items to the rooms
         habitacionDorada.addItem(new Item("Cofre dorado", 5000, "Cofre", false));
-        tiendaDeObjetos.addItem(new Item("Una espada", 1000, "Espada", true));
-        habitacionSur.addItem(new Item("Un escudo", 4000, "Escudo", true));
+        tiendaDeObjetos.addItem(new Item("Una espada", 2000, "Espada", true));
+        habitacionSur.addItem(new Item("Un escudo", 5000, "Escudo", true));
+        habitacionEste.addItem(new Item("Un anillo", 500, "anillo", true));
         // initialise room exits
         // habitacionInicial
         habitacionInicial.setExit("west", habitacionOeste);
@@ -160,6 +161,9 @@ public class Game
         }
         else if (commandWord.equals("items")) {
             player.items();
+        }
+        else if (commandWord.equals("put")){
+            player.put();
         }
 
         return wantToQuit;
